@@ -67,6 +67,7 @@ Last Update : June 2017
 */
 
 
+#include "In-Close4.h"
 #include "hr_time.h"		//for timing
 #include "crossplatform.h"
 #include <fstream>			//for file IO
@@ -148,7 +149,7 @@ string Jvalues[MAX_COLS/3][100]; //100 is max number of different values
 //__int64 inters = 0; //instrumentation to count number of intersections carried out
 //__int64 test = 0;   //instrumentation to count number of canonicity tests carried out
 
-int main()
+int main_entry()
 {
 	A = new int[MAX_FOR_A];
 	B = new short int[MAX_FOR_B];
