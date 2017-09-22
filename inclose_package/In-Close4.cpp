@@ -344,8 +344,8 @@ int niam(void)
 	//cout << "\n\nIntersections =  " << inters;
 	//cout << "\n\nCanon Tests =  " << test;
 
-	cout << "\n\nHit <enter> to finish";
-	while ( !_kbhit());
+	// cout << "\n\nHit <enter> to finish";
+	// while ( !_kbhit());
 	//delete [] context;
 	DYN_ALIGNED_DELETE_ARR(context);
 	delete onames;
