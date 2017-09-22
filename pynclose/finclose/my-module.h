@@ -1,0 +1,1 @@
+void MyModuleDoAction (void);

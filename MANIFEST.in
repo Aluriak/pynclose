@@ -1,0 +1,4 @@
+recursive-include pynclose/finclose/*.c
+recursive-include pynclose/finclose/*.h
+recursive-include pynclose/inclose/*.c
+recursive-include pynclose/inclose/*.h
