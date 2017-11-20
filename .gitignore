@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 *.vim
 build/
+inclose_sources
