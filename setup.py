@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import glob
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 # from pynclose import gen_finclose, gen_inclose
 from inclose_package import gen_inclose
 
