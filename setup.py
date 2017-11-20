@@ -6,9 +6,9 @@ from distutils.core import setup, Extension
 from inclose_package import gen_inclose
 
 module_inclose = 'build/inclose-binding.cpp'
-with open(module_inclose, 'w') as file_:
-    print('Generating file {}'.format(module_inclose))
-    gen_inclose.generate(file_)
+# with open(module_inclose, 'w') as file_:
+    # print('Generating file {}'.format(module_inclose))
+    # gen_inclose.generate(file_)
 
 inclose = Extension('inclose',
                     # sources=[module_inclose],
