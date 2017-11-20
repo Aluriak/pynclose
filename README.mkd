@@ -5,7 +5,7 @@ Python wrapper around the In-Close algorithm.
 ## In-Close sources
 Version of 18/07/2017 retrieved from
 [the project page](https://sourceforge.net/projects/inclose/),
-and slightly changed to remove non-necessary parts.
+and slightly changed to remove non-necessary parts (see 468fad66 and 04c00c47).
 
 ### TODO
 A future goal is to make the sources really wrappable and usable as a lib,
