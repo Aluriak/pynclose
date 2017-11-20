@@ -149,12 +149,16 @@ string Jvalues[MAX_COLS/3][100]; //100 is max number of different values
 //__int64 inters = 0; //instrumentation to count number of intersections carried out
 //__int64 test = 0;   //instrumentation to count number of canonicity tests carried out
 
-int niam(void)
+
+string run_search(string data_filename, unsigned int minimal_intent, unsigned int minimal_extent)
 {
 	A = new int[MAX_FOR_A];
 	B = new short int[MAX_FOR_B];
 	bptr = B;
 	cptr = childrenof;
+    minIn = minimal_intent;
+    minEx = minimal_extent;
+    fname = data_filename;
 
 	void InClose   (const int c, const int y, VECTOR_TYPE *Bparent);	//incremental concept closure functions
 	void InCloseMin(const int c, const int y, VECTOR_TYPE *Bparent); //same as InClose() but with min support for A.
@@ -177,57 +181,25 @@ int niam(void)
 									//outputs concepts as tree nodes with node number, parent node number, own attributes and own objects
 	void outputConceptsNamesCSV();  //outputs concepts as a csv file
 
-	cout << "*** In-Close4 Concept Miner and Concept Tree Builder 64-bit version ***";
-	cout << "\n\nCopyright Simon Andrews 2017, Sheffield Hallam University, 2017";
-	cout << "\n\nEnter cxt or dat file name including extension: ";
-	cin >> fname;
+	// cout << "*** In-Close4 Concept Miner and Concept Tree Builder 64-bit version ***";
+	// cout << "\n\nCopyright Simon Andrews 2017, Sheffield Hallam University, 2017";
+	// cout << "\n\nEnter cxt or dat file name including extension: ";
+	// cin >> fname;
 
 	//find out if file is cxt (FCA) or dat (FIMI) format
 	if(fname.substr( fname.length() - 3 ) == "dat") FIMI = true;
 
-	cout << "\nEnter minimum size of intent (no. attributes): ";
-	cin  >> minIn;
-	cout << "\nEnter minimum size of extent (no. objects): ";
-	cin  >> minEx;
+	// cout << "\nEnter minimum size of intent (no. attributes): ";
+	// cin  >> minIn;
+	// cout << "\nEnter minimum size of extent (no. objects): ";
+	// cin  >> minEx;
 
 	//input context file
 	if(FIMI)
 		datFileInput();
 	else
 		cxtFileInput();
-
-	//select format for outputting concepts
-	char outcons;
-	char outoption = '1';
-	cout << "\n\nOutput concepts to file? (y/n): ";
-	cin >> outcons;
-	if(outcons == 'y'){
-		if(!FIMI){
-			cout << "\nOutput concepts in which format: \n\t 1) concepts as lists of index numbers of objects and attributes.";
-			cout << "\n\t 2) concepts as lists of names of objects and attributes.";
-			cout << "\n\t 3) concepts with arrays for many-valued attributes,";
-			cout << "\n\t e.g. if the objects share the attributes \"location-Sheffield\" and \"location-Pitsmoor\"";
-			cout << "\n\t the corresponding JSON construction will be \"location\" : [\"Sheffield\",\"Pitsmoor\"].";
-			cout << "\n\t 4) output CONCEPT TREE to file in JSON format 'A' using object and attribute names.";
-			cout << "\n\t\t Visualise output concepts.JSON file at: //homepages.shu.ac.uk/~aceslh/fca/fcaTree.html";
-			cout << "\n\t\t Note that tree outputs significantly increase computation time.";
-			cout << "\n\t 5) output CONCEPT TREE to file in JSON format 'B' using object and attribute names.";
-			cout << "\n\t 6) output concepts as a csv file.";
-			cout << "\nEnter 1, 2, 3, 4, 5 or 6: ";
-			cin >> outoption;
-			while(minIn>0 && (outoption == '4' || outoption == '5')){
-				cout << "\n\nTree output is not possible with a minimum size of intent (top of the tree will be missing!)";
-				cout << "\n\nPlease select a different format: ";
-				cout << "\n\t 1) concepts as lists of index numbers of objects and attributes.";
-				cout << "\n\t 2) concepts as lists of names of objects and attributes.";
-				cout << "\n\t 3) concepts with arrays for many-valued attributes, e.g. if the objects share the attributes \"location-Sheffield\" and \"location-Pitsmoor\"";
-				cout << "\n\t the corresponding JSON construction will be \"location\" : [\"Sheffield\",\"Pitsmoor\"].";
-				cout << "\n\t 6) output concepts as a csv file.";
-				cout << "\nEnter 1, 2, 3 or 6: ";
-				cin >> outoption;
-			}
-		}
-	}
+    char outoption = '6';  // before, was choosen by prompting user
 
 	sSort.startTimer();
 	//set initial intent parent to 'no attributes involved'
@@ -246,11 +218,11 @@ int niam(void)
 	for (int i = 0; i < n; i++) colOriginal[i] = i; //init column index array for sorting
 
 	if((outoption != '4') && (outoption != '5')) {  //normally sort columns in ascedning order for performance
-		cout << "\nSorting...";
+		// cout << "\nSorting...";
 		sortColumns(); 
 	}
 	else { //unless a tree is required, in which case sort in descending order to force the most recursion (bushiness)
-		cout << "\nSorting...";
+		// cout << "\nSorting...";
 		sortColumnsR(); 
 	}
 
@@ -270,15 +242,7 @@ int niam(void)
 
 	sSort.stopTimer();
 
-	char sortcxt;
-		cout << "\n\nOutput sorted cxt file (y/n): ";
-		cin >> sortcxt;
-		if(sortcxt == 'y') {
-			cout << "\nOutputting sorted cxt...";
-			cxtFileOutput();
-		}
-
-	cout << "\nMining concepts...";
+	// cout << "\nMining concepts...";
 	sInner.startTimer(); //start inner timing: preprocessing and the mining
 
 	/* we will skip empty columns in processing*/
@@ -295,51 +259,22 @@ int niam(void)
 
 	sInner.stopTimer(); //report inner time
 
-	cout << "\n\nSort time     \t\t : " << sSort.getElapsedTime() << " seconds";
-	cout << "\nConcept mining time      : " << sInner.getElapsedTime() << " seconds";
-	cout << "\nTotal time \t\t : " << sSort.getElapsedTime()+sInner.getElapsedTime() << " seconds";
+	// cout << "\n\nSort time     \t\t : " << sSort.getElapsedTime() << " seconds";
+	// cout << "\nConcept mining time      : " << sInner.getElapsedTime() << " seconds";
+	// cout << "\nTotal time \t\t : " << sSort.getElapsedTime()+sInner.getElapsedTime() << " seconds";
 
 	calcAandBsizes();
 
-	outputNoConsBySize();//and count concepts
+	// outputNoConsBySize();//and count concepts
 
-	cout << "\n\nNumber of concepts: " << numcons;
+	// cout << "\n\nNumber of concepts: " << numcons;
 
 	//call the desired concept output procedure
-	if(outcons == 'y'){
-		if(FIMI){
-			outputConcepts();
-		}
-		else{
-			switch(outoption){
-				case '1' :
-					outputConcepts();
-					break;
-				case '2' :
-					outputConceptsNames();
-					break;
-				case '3' :
-					outputJSONConcepts();
-					break;
-				case '4' :
-					outputConceptTreeDendrogram();
-					break;
-				case '5' :
-					outputConceptTree();
-					break;
-				case '6' :
-					outputConceptsNamesCSV();
-					break;
-				default :
-					outputConceptsNames();
-				}
-		}
-		cout << "Done.";
-	}
+    outputConceptsNamesCSV();
 
 	//if minimum support has been specified, output the reduced context file
-	if(minIn>0 || minEx > 0)
-		outputContext();
+	// if(minIn>0 || minEx > 0)
+		// outputContext();
 
 	//cout << "\n\nIntersections =  " << inters;
 	//cout << "\n\nCanon Tests =  " << test;
@@ -350,7 +285,7 @@ int niam(void)
 	DYN_ALIGNED_DELETE_ARR(context);
 	delete onames;
 	delete anames;
-        return 1;
+    return string("concepts.csv");
 }
 
 //********** END MAIN *********************************************************
@@ -618,7 +553,7 @@ void outputConcepts() //output concepts to file in JSON format
 {
 	string strData = "";
 	char ibuffer[40];
-	cout << "\n\nOutputting concepts to file...";
+	// cout << "\n\nOutputting concepts to file...";
 	FILE *fp1;
 	fopen_s(&fp1, "concepts.json", "w");
 
@@ -682,7 +617,7 @@ void outputConceptsNames() //output concepts to file in JSON format using object
 {
 	string strData = "";
 	char ibuffer[40];
-	cout << "\n\nOutputting concepts to file...";
+	// cout << "\n\nOutputting concepts to file...";
 	FILE *fp1;
 	fopen_s(&fp1, "concepts.json", "w");
 
@@ -775,7 +710,7 @@ void outputConceptsNamesCSV() //output concepts to file in JSON format using obj
 {
 	string strData = "";
 	char ibuffer[40];
-	cout << "\n\nOutputting concepts to file...";
+	// cout << "\n\nOutputting concepts to file...";
 	FILE *fp1;
 	fopen_s(&fp1, "concepts.csv", "w");
 
@@ -853,7 +788,7 @@ void outputConceptTreeDendrogram()	//output CONCEPT TREE to file in JSON format 
 {
 	void outputConceptTreeFrom(int con, bool oan, bool aan, FILE* fp1, string tabs);
 
-	cout << "\n\nOutputting concepts to file...";
+	// cout << "\n\nOutputting concepts to file...";
 	FILE *fp1;
 	fopen_s(&fp1, "concepts.json", "w");
 	string tabs = "";
@@ -1030,7 +965,7 @@ void outputConceptTree()	//output CONCEPT TREE to file in JSON format using obje
 {
 	string strData = "";
 	char ibuffer[40];
-	cout << "\n\nOutputting concepts to file...";
+	// cout << "\n\nOutputting concepts to file...";
 	FILE *fp1;
 	fopen_s(&fp1, "concepts.json", "w");
 
@@ -1212,7 +1147,7 @@ void outputJSONConcepts() //output concepts to file using object and attribute n
 	fopen_s(&fp1, "concepts.json", "w");
 	fputs("{\n\t\"Concepts\":\n\t[",fp1);
 
-	cout << "\n\nIf attributes have been formed from many-valued attributes, enter delimiter character, else hit enter: ";
+	// cout << "\n\nIf attributes have been formed from many-valued attributes, enter delimiter character, else hit enter: ";
 	bool manyvalued;
 	getchar();
 	char delim = getchar();
@@ -1242,7 +1177,7 @@ void outputJSONConcepts() //output concepts to file using object and attribute n
 		}
 	}
 
-	cout << "\n\nOutputting Concepts to file in JSON format...";
+	// cout << "\n\nOutputting Concepts to file in JSON format...";
 
 	bool firstConcept = true;
 	/* for each concept */
@@ -1418,7 +1353,7 @@ void datFileInput() {
 	ifstream datFile;
 	datFile.open(fname.c_str());
 
-	cout << "\nReading data...";
+	// cout << "\nReading data...";
 
 	//get number of objects (= number of lines in file)
 	m=std::count(istreambuf_iterator<char>(datFile), istreambuf_iterator<char>(), '\n');
@@ -1532,7 +1467,7 @@ void cxtFileInput()		//input data from Burmeister cxt file
 	ifstream cxtFile;
 	cxtFile.open (fname.c_str());
 
-	cout << "\n\nReading data...";
+	// cout << "\n\nReading data...";
 	char Bchar;
 	cxtFile >> Bchar;	//strip out the 'B' at top of Burmeister cxt file!
 	cxtFile >> m;		//input number of objects
@@ -1927,7 +1862,7 @@ void exchange(int original[], int from, int to) {
 
 void outputContext()
 {
-	cout << "\n\nOutputting reduced context file (only uses concepts that satify minimum support)...";
+	// cout << "\n\nOutputting reduced context file (only uses concepts that satify minimum support)...";
 
 	/* flags to use to control susequent file output: only output rows and columns that are not empty */
 	bool colHasSupport[MAX_COLS];

@@ -3,6 +3,7 @@
 #include "crossplatform.h"
 #include "targetver.h"
 int niam(void);
+string run_search(string data_filename, unsigned int minimal_intent, unsigned int minimal_extent);
 void InClose   (const int c, const int y, VECTOR_TYPE *Bparent);
 void InCloseMin(const int c, const int y, VECTOR_TYPE *Bparent);
 void InCloseDendo(const int c, const int y, const VECTOR_TYPE *Bparent);
