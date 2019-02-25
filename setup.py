@@ -3,10 +3,9 @@ import os
 import glob
 from setuptools import setup, Extension
 # from pynclose import gen_finclose, gen_inclose
-from inclose_package import gen_inclose
 
 
-inclose = Extension('inclose',
+inclose = Extension('pynclose.inclose',
                     sources=[*glob.glob('inclose_package/*.cpp')],
                     include_dirs=['inclose_package/'],
                     extra_compile_args=['-fopenmp', '-O2'],
