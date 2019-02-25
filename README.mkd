@@ -1,5 +1,5 @@
 # Pynclose
-Python wrapper around the In-Close algorithm.
+Python wrapper around the [In-Close algorithm implementation by Simon Andrews](https://sourceforge.net/projects/inclose/), Sheffield Hallam University, UK, Conceptual Structures Research Group.
 
 
 ## In-Close sources
