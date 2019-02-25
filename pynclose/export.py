@@ -2,7 +2,7 @@
 
 """
 
-import inclose
+from . import inclose
 from . import extract
 
 
