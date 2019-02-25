@@ -1,7 +1,7 @@
 all: clean compile test
 
 clean:
-	- rm venv/lib64/python3.5/site-packages/pynclose venv/lib64/python3.5/site-packages/pynclose-0.0.1-py3.5.egg-info -r
+	- rm -r venv/lib64/python3.6/site-packages/pynclose venv/lib64/python3.6/site-packages/pynclose-0.*.egg-info
 	- rm -r dist build .cache pynclose.egg-info
 
 compile:
